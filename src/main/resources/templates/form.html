@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form method="post" action="/simpan" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="hidden" name="idMahasiswa" value="{{idMahasiswa}}">
+        <input type="hidden" name="action" value="{{action}}">
+        <input type="submit" value="Simpan">
+    </form>
+</body>
+</html>

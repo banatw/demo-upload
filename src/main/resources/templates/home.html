@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Nama</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#mahasiswas}}
+            <tr>
+                <td><a href="/detail?id={{idMahasiswa}}">{{nama}}</a></td>
+            </tr>
+            {{/mahasiswas}}
+        </tbody>
+    </table>
+</body>
+</html>

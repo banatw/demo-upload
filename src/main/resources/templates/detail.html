@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <a href="/add?id={{idMahasiswa}}">Add File</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Nama File</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#pictures}}
+            <tr>
+                <td>
+                    {{filename}}
+                </td>
+                <td>
+                    <img src="pictures/{{filename}}">
+                </td>
+            </tr>
+            {{/pictures}}
+        </tbody>
+    </table>
+</body>
+</html>
