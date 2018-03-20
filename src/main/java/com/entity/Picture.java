@@ -9,7 +9,18 @@ public class Picture {
     private Integer idPicture;
     private String filename;
 
-    //private Byte[] image;
+    @Column(columnDefinition = "TEXT")
+    private String image;
+
+    private String contentType;
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
 
     public Picture() {
     }
@@ -30,11 +41,11 @@ public class Picture {
         this.filename = filename;
     }
 
-    /*public Byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(Byte[] image) {
+    public void setImage(String image) {
         this.image = image;
-    }*/
+    }
 }
