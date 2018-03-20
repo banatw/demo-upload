@@ -91,12 +91,6 @@ public class DemoUploadApplication {
 
 		@PostMapping("/simpan")
 		public String simpan(Form frm) {
-			MagicMatch magicMatch = new MagicMatch();
-			try {
-				magicMatch.getMimeType(frm.getFile().getBytes());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 			ByteArrayOutputStream byteArrayOutputStreamThumbnail = new ByteArrayOutputStream();
 			File file = new File(UPLOADED_PATH + frm.getFile().getOriginalFilename());
 			//copy file to server
