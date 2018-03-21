@@ -10,16 +10,21 @@
         <thead>
             <tr>
                 <th>Nama File</th>
+                <th>View</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
             {{#pictures}}
             <tr>
                 <td>
-                    {{filename}}
+                    {{description}}
                 </td>
                 <td>
-                    <img src="data:image/png;base64, {{image}}">
+                    <a href="/pictures/{{description}}" target="_blank" ><img src="data:image/png;base64, {{image}}"></a>
+                </td>
+                <td>
+                    <a href="/delete?id={{idPicture}}&idm={{idMahasiswa}}">Hapus</a>
                 </td>
             </tr>
             {{/pictures}}

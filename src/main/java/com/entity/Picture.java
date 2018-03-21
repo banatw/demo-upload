@@ -7,6 +7,16 @@ public class Picture {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idPicture;
+    private String description;
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
     private String filename;
 
     @Column(columnDefinition = "TEXT")
@@ -33,12 +43,12 @@ public class Picture {
         this.idPicture = idPicture;
     }
 
-    public String getFilename() {
-        return filename;
+    public String getDescription() {
+        return description;
     }
 
-    public void setFilename(String filename) {
-        this.filename = filename;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getImage() {

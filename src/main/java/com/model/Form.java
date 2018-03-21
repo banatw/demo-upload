@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class Form {
 
 
-    private MultipartFile file;
+    private MultipartFile[] file;
 
     private String idMahasiswa;
 
@@ -20,11 +20,11 @@ public class Form {
 
     private Action action;
 
-    public MultipartFile getFile() {
+    public MultipartFile[] getFile() {
         return file;
     }
 
-    public void setFile(MultipartFile file) {
+    public void setFile(MultipartFile[] file) {
         this.file = file;
     }
 
