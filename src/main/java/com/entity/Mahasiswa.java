@@ -1,13 +1,22 @@
 package com.entity;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.id.UUIDGenerator;
+
 import javax.persistence.*;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 public class Mahasiswa {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idMahasiswa;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    private UUID idMahasiswa;
     private String nama;
 
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
@@ -17,11 +26,11 @@ public class Mahasiswa {
     public Mahasiswa() {
     }
 
-    public Integer getIdMahasiswa() {
+    public UUID getIdMahasiswa() {
         return idMahasiswa;
     }
 
-    public void setIdMahasiswa(Integer idMahasiswa) {
+    public void setIdMahasiswa(UUID idMahasiswa) {
         this.idMahasiswa = idMahasiswa;
     }
 

@@ -3,12 +3,14 @@ package com.model;
 import com.en.Action;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.UUID;
+
 public class Form {
 
 
     private MultipartFile[] file;
 
-    private String idMahasiswa;
+    private UUID idMahasiswa;
 
     public Action getAction() {
         return action;
@@ -28,11 +30,11 @@ public class Form {
         this.file = file;
     }
 
-    public String getIdMahasiswa() {
+    public UUID getIdMahasiswa() {
         return idMahasiswa;
     }
 
-    public void setIdMahasiswa(String idMahasiswa) {
+    public void setIdMahasiswa(UUID idMahasiswa) {
         this.idMahasiswa = idMahasiswa;
     }
 }
