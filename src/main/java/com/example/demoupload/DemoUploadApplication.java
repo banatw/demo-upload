@@ -69,7 +69,7 @@ public class DemoUploadApplication {
         }
 
         @GetMapping("/detail")
-        public String showDetail(@RequestParam("id") UUID id, Model model) {
+        public String showDetail(@RequestParam("id") Integer id, Model model) {
             Mahasiswa mahasiswa = mahasiswaRepo.findOne(id);
             model.addAttribute("idMahasiswa", id);
             model.addAttribute("pictures", mahasiswa.getPictures());
@@ -77,14 +77,14 @@ public class DemoUploadApplication {
         }
 
         @GetMapping("/add")
-        public String showForm(@RequestParam("id") UUID id, Model model) {
+        public String showForm(@RequestParam("id") Integer id, Model model) {
             model.addAttribute("action", Action.ADD);
             model.addAttribute("idMahasiswa", id);
             return "form";
         }
 
         @GetMapping("/view")
-        public String showView(@RequestParam("id") UUID id, Model model) {
+        public String showView(@RequestParam("id") Integer id, Model model) {
             //Integer integerId = Integer.valueOf(id);
             Picture picture = pictureRepo.findOne(id);
             model.addAttribute("src","/pictures/" + picture.getDescription());
@@ -92,7 +92,7 @@ public class DemoUploadApplication {
         }
 
         @GetMapping("/delete")
-        public String hapus(@RequestParam("id") UUID id,@RequestParam("idm") UUID idm) {
+        public String hapus(@RequestParam("id") Integer id,@RequestParam("idm") Integer idm) {
             Picture picture = pictureRepo.findOne(id);
             File file = new File(UPLOADED_PATH + picture.getDescription());
             file.delete();

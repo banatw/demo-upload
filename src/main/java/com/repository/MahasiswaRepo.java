@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface MahasiswaRepo extends PagingAndSortingRepository<Mahasiswa,UUID> {
+public interface MahasiswaRepo extends PagingAndSortingRepository<Mahasiswa,Integer> {
 }

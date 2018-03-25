@@ -1,19 +1,13 @@
 package com.entity;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
-import java.util.UUID;
 
 @Entity
 public class Picture {
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    private UUID idPicture;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+
+    private Integer idPicture;
     private String description;
 
     public String getFilename() {
@@ -42,11 +36,11 @@ public class Picture {
     public Picture() {
     }
 
-    public UUID getIdPicture() {
+    public Integer getIdPicture() {
         return idPicture;
     }
 
-    public void setIdPicture(UUID idPicture) {
+    public void setIdPicture(Integer idPicture) {
         this.idPicture = idPicture;
     }
 
