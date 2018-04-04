@@ -6,17 +6,14 @@ import com.entity.Picture;
 import com.model.Form;
 import com.repository.MahasiswaRepo;
 import com.repository.PictureRepo;
-import net.coobird.thumbnailator.Thumbnails;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,10 +25,13 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Set;
-import java.util.UUID;
 
 @SpringBootApplication
 @EntityScan("com.entity")
@@ -46,14 +46,14 @@ public class DemoUploadApplication {
         SpringApplication.run(DemoUploadApplication.class, args);
     }
 
-    @Bean
+   /* @Bean
     public CommandLineRunner initialData() {
         return (x) -> {
             Mahasiswa mahasiswa = new Mahasiswa();
             mahasiswa.setNama("syabana");
             mahasiswaRepo.save(mahasiswa);
         };
-    }
+    }*/
 
     @Controller
     public class MyController extends WebMvcConfigurerAdapter {
@@ -94,7 +94,7 @@ public class DemoUploadApplication {
         @GetMapping("/delete")
         public String hapus(@RequestParam("id") Integer id,@RequestParam("idm") Integer idm) {
             Picture picture = pictureRepo.findOne(id);
-            File file = new File(UPLOADED_PATH + picture.getDescription());
+            File file = new File(UPLOADED_PATH + picture.getFilename());
             file.delete();
             pictureRepo.delete(id);
             return "redirect:/detail?id=" + idm;
@@ -136,23 +136,25 @@ public class DemoUploadApplication {
                         PDDocument pdDocument = PDDocument.load(file);
                         PDFRenderer renderer = new PDFRenderer(pdDocument);
                         BufferedImage image = renderer.renderImage(0);
+                        Image tmpImage = image.getScaledInstance(100,100,Image.SCALE_DEFAULT);
+                        BufferedImage resizedImage = new BufferedImage(100,100,BufferedImage.TYPE_INT_ARGB);
+                        Graphics2D g = resizedImage.createGraphics();
+                        g.drawImage(tmpImage,0,0,100,100,null);
+                        g.dispose();
                         pdDocument.close();
-                        java.io.ByteArrayOutputStream byteArrayOutputStream = new java.io.ByteArrayOutputStream();
-                        ImageIO.write(image, "png", byteArrayOutputStream);
-                        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-                        Thumbnails.of(byteArrayInputStream)
-                                .size(100, 100)
-                                .outputFormat("png")
-                                .toOutputStream(byteArrayOutputStreamThumbnail);
+                        ImageIO.write(resizedImage, "png", byteArrayOutputStreamThumbnail);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 } else {
                     try {
-                        Thumbnails.of(file)
-                                .size(100, 100)
-                                .outputFormat("png")
-                                .toOutputStream(byteArrayOutputStreamThumbnail);
+                        BufferedImage image = ImageIO.read(file);
+                        Image tmpImage = image.getScaledInstance(100,100,Image.SCALE_SMOOTH);
+                        BufferedImage resizedImage = new BufferedImage(100,100,BufferedImage.TYPE_INT_ARGB);
+                        Graphics2D g = resizedImage.createGraphics();
+                        g.drawImage(tmpImage,0,0,100,100,null);
+                        g.dispose();
+                        ImageIO.write(resizedImage, "png", byteArrayOutputStreamThumbnail);
                     } catch (IOException e) {
 
                     }
