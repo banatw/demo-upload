@@ -9,6 +9,7 @@ import com.repository.PictureRepo;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -16,7 +17,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,9 +34,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.resource.PathResourceResolver;
@@ -115,13 +118,13 @@ public class DemoUploadApplication {
             return "redirect:/detail?id=" + idm;
         }
 
-        @GetMapping("/view")
-        public void viewPict(@RequestParam("id") String id,HttpServletResponse response) {
+        @GetMapping(value = "/view")
+        public void viewPict(@RequestParam("id") String id, HttpServletResponse response) {
             Picture picture = pictureRepo.findOne(id);
             File file = new File(UPLOADED_PATH + picture.getIdPicture());
             response.setContentType(picture.getContentType());
             response.setContentLength((int) file.length());
-            response.setHeader("Content-Disposition", String.format("inline; filename=\"" + picture.getFilename() +"\""));
+            response.setHeader("Content-Disposition", "inline; filename=\"" + picture.getFilename() +"\"");
             try {
                 InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
                 FileCopyUtils.copy(inputStream,response.getOutputStream());
@@ -131,6 +134,7 @@ public class DemoUploadApplication {
                 e.printStackTrace();
             }
         }
+
 
         @PostMapping("/simpan")
         public String simpan(Form frm) {
