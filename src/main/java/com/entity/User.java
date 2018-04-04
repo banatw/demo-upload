@@ -4,27 +4,28 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class Mahasiswa {
+public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-
-    private Integer idMahasiswa;
+    private String username;
     private String nama;
 
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "id_mahasiswa")
     private Set<Picture> pictures;
 
-    public Mahasiswa() {
+    private String password;
+    private String role;
+
+    public User() {
     }
 
-    public Integer getIdMahasiswa() {
-        return idMahasiswa;
+    public String getUsername() {
+        return username;
     }
 
-    public void setIdMahasiswa(Integer idMahasiswa) {
-        this.idMahasiswa = idMahasiswa;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getNama() {
@@ -41,5 +42,21 @@ public class Mahasiswa {
 
     public void setPictures(Set<Picture> pictures) {
         this.pictures = pictures;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

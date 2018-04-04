@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface PictureRepo extends PagingAndSortingRepository<Picture,Integer> {
+public interface PictureRepo extends PagingAndSortingRepository<Picture,String> {
 }

@@ -11,7 +11,7 @@
     <title>Hello, world!</title>
 </head>
 <body>
-    <a href="/add?id={{idMahasiswa}}">Add File</a>
+    <a href="/add?id={{username}}">Add File</a>
     <table>
         <thead>
             <tr>
@@ -27,10 +27,10 @@
                     {{description}}
                 </td>
                 <td>
-                    <a href="/pictures/{{filename}}" target="_blank" ><img src="data:image/png;base64, {{image}}"></a>
+                    <a href="/view?id={{idPicture}}" target="_blank" ><img src="data:image/png;base64, {{image}}"></a>
                 </td>
                 <td>
-                    <a href="/delete?id={{idPicture}}&idm={{idMahasiswa}}">Hapus</a>
+                    <a href="/delete?id={{idPicture}}&idm={{username}}">Hapus</a>
                 </td>
             </tr>
             {{/pictures}}

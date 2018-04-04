@@ -8,7 +8,7 @@ public class Form {
 
     private MultipartFile[] file;
 
-    private Integer idMahasiswa;
+    private String username;
 
     public Action getAction() {
         return action;
@@ -28,11 +28,11 @@ public class Form {
         this.file = file;
     }
 
-    public Integer getIdMahasiswa() {
-        return idMahasiswa;
+    public String getUsername() {
+        return username;
     }
 
-    public void setIdMahasiswa(Integer idMahasiswa) {
-        this.idMahasiswa = idMahasiswa;
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

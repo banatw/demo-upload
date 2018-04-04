@@ -5,9 +5,7 @@ import javax.persistence.*;
 @Entity
 public class Picture {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-
-    private Integer idPicture;
+    private String idPicture;
     private String description;
 
     public String getFilename() {
@@ -36,11 +34,11 @@ public class Picture {
     public Picture() {
     }
 
-    public Integer getIdPicture() {
+    public String getIdPicture() {
         return idPicture;
     }
 
-    public void setIdPicture(Integer idPicture) {
+    public void setIdPicture(String idPicture) {
         this.idPicture = idPicture;
     }
 
