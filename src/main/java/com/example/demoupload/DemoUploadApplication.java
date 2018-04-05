@@ -1,11 +1,11 @@
 package com.example.demoupload;
 
 import com.en.Action;
-import com.entity.User;
 import com.entity.Picture;
+import com.entity.User;
 import com.model.Form;
-import com.repository.UserRepo;
 import com.repository.PictureRepo;
+import com.repository.UserRepo;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
@@ -34,7 +34,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.resource.PathResourceResolver;
@@ -134,7 +136,36 @@ public class DemoUploadApplication {
                 e.printStackTrace();
             }
         }
+        /*@GetMapping(value = "/view")
+        public ResponseEntity<InputStreamResource> view(@RequestParam("id") String id) {
+            Picture picture = pictureRepo.findOne(id);
+            File file = new File(UPLOADED_PATH + picture.getIdPicture());
+            InputStreamResource inputStreamResource = null;
+            try {
+                inputStreamResource = new InputStreamResource(new FileInputStream(file));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            String[] type = picture.getContentType().split("/");
+            System.out.println(picture.getContentType());
+            System.out.println(type[0]);
+            MediaType mediaType = new MediaType(type[0],type[1]);
+            return ResponseEntity.ok()
+                    .contentLength(file.length())
+                    .contentType(MediaType.IMAGE_GIF)
+                    .header(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=" + picture.getFilename())
+                    .body(inputStreamResource);
 
+        }*/
+
+        /*@GetMapping(value = "/view")
+        public void getImageAsByteArray(HttpServletResponse response,@RequestParam("id") String id) throws IOException {
+            Picture picture = pictureRepo.findOne(id);
+            File file = new File(UPLOADED_PATH + picture.getIdPicture());
+            InputStream in = getClass().getResourceAsStream(UPLOADED_PATH + picture.getIdPicture());
+            response.setContentType(MediaType.IMAGE_GIF_VALUE);
+            IOUtils.copy(in, response.getOutputStream());
+        }*/
 
         @PostMapping("/simpan")
         public String simpan(Form frm) {
