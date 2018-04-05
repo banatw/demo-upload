@@ -8,6 +8,10 @@ import com.repository.PictureRepo;
 import com.repository.UserRepo;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
+import org.apache.poi.POIXMLProperties;
+import org.apache.poi.xwpf.converter.pdf.PdfConverter;
+import org.apache.poi.xwpf.converter.pdf.PdfOptions;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +51,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.security.Principal;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -169,6 +174,9 @@ public class DemoUploadApplication {
 
         @PostMapping("/simpan")
         public String simpan(Form frm) {
+            final int HEIGHT = 200;
+            final int WIDTH = 200;
+
             ByteArrayOutputStream byteArrayOutputStreamThumbnail = null;
             User user = userRepo.findOne(frm.getUsername());
             File file;
@@ -197,7 +205,7 @@ public class DemoUploadApplication {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
+                //System.out.println(frm.getFile()[i].getContentType().toString());
                 //Create thumbnail
                 byteArrayOutputStreamThumbnail = new ByteArrayOutputStream();
                 if (frm.getFile()[i].getContentType().equalsIgnoreCase("application/pdf")) {
@@ -205,23 +213,51 @@ public class DemoUploadApplication {
                         PDDocument pdDocument = PDDocument.load(file);
                         PDFRenderer renderer = new PDFRenderer(pdDocument);
                         BufferedImage image = renderer.renderImage(0);
-                        Image tmpImage = image.getScaledInstance(100,100,Image.SCALE_DEFAULT);
-                        BufferedImage resizedImage = new BufferedImage(100,100,BufferedImage.TYPE_INT_ARGB);
+                        Image tmpImage = image.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_DEFAULT);
+                        BufferedImage resizedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
                         Graphics2D g = resizedImage.createGraphics();
-                        g.drawImage(tmpImage,0,0,100,100,null);
+                        g.drawImage(tmpImage, 0, 0, WIDTH, HEIGHT, null);
                         g.dispose();
                         pdDocument.close();
                         ImageIO.write(resizedImage, "png", byteArrayOutputStreamThumbnail);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                } else if(frm.getFile()[i].getContentType().equalsIgnoreCase("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+                        || frm.getFile()[i].getContentType().equalsIgnoreCase("application/msword")
+                        || frm.getFile()[i].getContentType().equalsIgnoreCase("application/vnd.openxmlformats-officedocument.presentationml.presentation")) {
+                    try {
+                        InputStream is = new FileInputStream(file);
+                        XWPFDocument document = new XWPFDocument(is);
+
+                        // 2) Prepare Pdf options
+                        PdfOptions options = PdfOptions.create();;
+
+                        // 3) Convert XWPFDocument to Pdf
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        PdfConverter.getInstance().convert(document,baos,options);
+                        PDDocument pdDocument = PDDocument.load(baos.toByteArray());
+                        PDFRenderer renderer = new PDFRenderer(pdDocument);
+                        BufferedImage image = renderer.renderImage(0);
+                        Image tmpImage = image.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_DEFAULT);
+                        BufferedImage resizedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
+                        Graphics2D g = resizedImage.createGraphics();
+                        g.drawImage(tmpImage, 0, 0, WIDTH, HEIGHT, null);
+                        g.dispose();
+                        pdDocument.close();
+                        ImageIO.write(resizedImage, "png", byteArrayOutputStreamThumbnail);
+                        //String thumbnail = props.getThumbnailFilename();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 } else {
                     try {
                         BufferedImage image = ImageIO.read(file);
-                        Image tmpImage = image.getScaledInstance(100,100,Image.SCALE_SMOOTH);
-                        BufferedImage resizedImage = new BufferedImage(100,100,BufferedImage.TYPE_INT_ARGB);
+                        Image tmpImage = image.getScaledInstance(WIDTH, HEIGHT,Image.SCALE_SMOOTH);
+                        BufferedImage resizedImage = new BufferedImage(WIDTH, HEIGHT,BufferedImage.TYPE_INT_ARGB);
                         Graphics2D g = resizedImage.createGraphics();
-                        g.drawImage(tmpImage,0,0,100,100,null);
+                        g.drawImage(tmpImage,0,0,WIDTH, HEIGHT,null);
                         g.dispose();
                         ImageIO.write(resizedImage, "png", byteArrayOutputStreamThumbnail);
                     } catch (IOException e) {
